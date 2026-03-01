@@ -71,7 +71,7 @@ const allArticles = [
       </p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary">Get in Touch</a>
-        <a href="https://drive.google.com/file/d/1k70KEsPsYb5eiD9SgqED2Ejrecskz_v3/view" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Download CV</a>
+        <a href="https://drive.google.com/file/d/1AMJCy47vP3bqVHn_gX5yRgyi_hZUmI-f/view" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Download CV</a>
       </div>
     </div>
     <div class="hero-avatar">
@@ -212,6 +212,17 @@ const allArticles = [
   <section id="contact" class="section contact">
     <h2 class="section-title">Get in Touch</h2>
     <p>Feel free to reach out if you want to collaborate, ask a question, or simply say hello!</p>
+    <div class="contact-methods">
+      <a href="mailto:talk@sagardash.me" class="contact-method-link">
+        <span class="method-icon">📩</span> talk@sagardash.me
+      </a>
+      <a href="https://t.me/sagardashme" target="_blank" rel="noopener noreferrer" class="contact-method-link">
+        <span class="method-icon">✈️</span> Telegram
+      </a>
+      <a href="http://m.me/sagar.dash1" target="_blank" rel="noopener noreferrer" class="contact-method-link">
+        <span class="method-icon">💬</span> Messenger
+      </a>
+    </div>
     
     <!-- Formspree Form -->
     <form class="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
@@ -726,6 +737,35 @@ const allArticles = [
   .section-subtitle {
     opacity: 0.7;
     margin-bottom: 2rem;
+  }
+
+  .contact-methods {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .contact-method-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--brand-color);
+    padding: 0.6rem 1.25rem;
+    background: rgba(var(--brand-rgb), 0.1);
+    border-radius: 99px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .contact-method-link:hover {
+    transform: translateY(-2px);
+    background: rgba(var(--brand-rgb), 0.2);
+    box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.1);
+  }
+  .method-icon {
+    font-size: 1.2rem;
   }
 
   /* Contact Form */
