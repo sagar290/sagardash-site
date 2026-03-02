@@ -1,11 +1,11 @@
 ---
 const navLinks = [
-  { href: '/#about', label: 'About', id: 'about' },
-  { href: '/#experience', label: 'Experience', id: 'experience' },
-  { href: '/#skills', label: 'Skills', id: 'skills' },
-  { href: '/#open-source', label: 'OS', id: 'open-source' },
-  { href: '/#projects', label: 'Projects', id: 'projects' },
-  { href: '/#articles', label: 'Articles', id: 'articles' },
+  { href: "/#about", label: "About", id: "about" },
+  { href: "/#experience", label: "Experience", id: "experience" },
+  { href: "/#skills", label: "Skills", id: "skills" },
+  { href: "/#open-source", label: "OS", id: "open-source" },
+  { href: "/#projects", label: "Projects", id: "projects" },
+  { href: "/#articles", label: "Articles", id: "articles" },
 ];
 ---
 
@@ -14,14 +14,16 @@ const navLinks = [
     <div class="timeline-line"></div>
     <nav class="timeline-nav">
       <ul class="timeline-list">
-        {navLinks.map((link) => (
-          <li class="timeline-item">
-            <a href={link.href} class="timeline-link" data-section={link.id}>
-              <span class="timeline-node"></span>
-              <span class="timeline-label">{link.label}</span>
-            </a>
-          </li>
-        ))}
+        {
+          navLinks.map((link) => (
+            <li class="timeline-item">
+              <a href={link.href} class="timeline-link" data-section={link.id}>
+                <span class="timeline-node" />
+                <span class="timeline-label">{link.label}</span>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
   </div>
@@ -121,33 +123,38 @@ const navLinks = [
 </style>
 
 <script>
-  const observerOptions = {
-    root: null,
-    rootMargin: '-20% 0px -70% 0px',
-    threshold: 0
-  };
+  function setupTimeline() {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -70% 0px",
+      threshold: 0,
+    };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        updateActiveLink(id);
-      }
-    });
-  }, observerOptions);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          updateActiveLink(id);
+        }
+      });
+    }, observerOptions);
 
-  function updateActiveLink(id: string) {
-    const links = document.querySelectorAll('.timeline-link');
-    links.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('data-section') === id) {
-        link.classList.add('active');
-      }
+    function updateActiveLink(id: string) {
+      const links = document.querySelectorAll(".timeline-link");
+      links.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("data-section") === id) {
+          link.classList.add("active");
+        }
+      });
+    }
+
+    // Observe all sections that have IDs
+    document.querySelectorAll("section[id]").forEach((section) => {
+      observer.observe(section);
     });
   }
 
-  // Observe all sections that have IDs
-  document.querySelectorAll('section[id]').forEach(section => {
-    observer.observe(section);
-  });
+  // Initial setup and re-run on navigation
+  document.addEventListener("astro:page-load", setupTimeline);
 </script>

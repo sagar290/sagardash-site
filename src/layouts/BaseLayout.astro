@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SidebarTimeline from "../components/SidebarTimeline.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -13,7 +14,7 @@ interface Props {
 const {
   title,
   description = "Minimalist Developer Portfolio",
-  image = "/og-image.jpg",
+  image = "/og-image.png",
 } = Astro.props;
 ---
 
@@ -25,13 +26,117 @@ const {
     <link rel="icon" type="image/png" href="/avatar.png" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X7CD336W"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-S5X7CD336W");
+
+      // Track pageviews and setup click tracking on SPA navigation
+      document.addEventListener("astro:page-load", () => {
+        // 1. Log Pageview
+        gtag("config", "G-S5X7CD336W", {
+          page_path: window.location.pathname,
+        });
+
+        // 2. Global Event Listener for Clicks
+        document.body.addEventListener("click", (event) => {
+          const target = event.target.closest("a, button");
+          if (!target) return;
+
+          const label =
+            target.getAttribute("aria-label") ||
+            target.innerText?.trim() ||
+            target.getAttribute("href");
+          const category = target.tagName.toLowerCase();
+
+          gtag("event", "click", {
+            event_category: category,
+            event_label: label,
+            value: window.location.pathname,
+          });
+        });
+
+        // 3. Section Dwell Time Tracking
+        let activeSection = null;
+        let startTime = null;
+
+        const sendTimeEvent = (section, duration) => {
+          if (duration < 1000) return; // Ignore quick scrolls (< 1s)
+          gtag("event", "section_dwell_time", {
+            section_id: section,
+            duration_s: Math.round(duration / 1000),
+          });
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                const now = Date.now();
+                if (activeSection && activeSection !== entry.target.id) {
+                  sendTimeEvent(activeSection, now - startTime);
+                }
+                activeSection = entry.target.id;
+                startTime = now;
+              }
+            });
+          },
+          { threshold: 0.6 } // Needs to be 60% visible to count
+        );
+
+        document.querySelectorAll("section[id]").forEach((section) => {
+          observer.observe(section);
+        });
+
+        // Track time when user leaves or navigates
+        document.addEventListener("astro:before-preparation", () => {
+          if (activeSection)
+            sendTimeEvent(activeSection, Date.now() - startTime);
+          activeSection = null;
+        });
+      });
+    </script>
+
     <!-- SEO / OpenGraph Tags -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={Astro.url.href} />
+    
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
+    <meta property="og:url" content={Astro.url.href} />
+    
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Sagar Dash",
+        "url": "https://sagardash.me",
+        "jobTitle": "Backend Architect",
+        "sameAs": [
+          "https://github.com/sagar290",
+          "https://www.linkedin.com/in/sagardash1/",
+          "https://medium.com/@sagar-dash290"
+        ],
+        "description": "Backend Architect with 8+ years of experience designing and scaling distributed systems."
+      }
+    </script>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,20 +148,34 @@ const {
 
     <!-- Theme Inline Script to prevent FOUC -->
     <script is:inline>
-      const getThemePreference = () => {
+      const theme = () => {
         if (
           typeof localStorage !== "undefined" &&
           localStorage.getItem("theme")
         ) {
           return localStorage.getItem("theme");
         }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
       };
-      const isDark = getThemePreference() === "dark";
-      document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+
+      const setLightTheme = () =>
+        document.documentElement.classList.remove("dark");
+      const setDarkTheme = () => document.documentElement.classList.add("dark");
+
+      const updateTheme = () => {
+        theme() === "light" ? setLightTheme() : setDarkTheme();
+      };
+
+      // Initial call
+      updateTheme();
+
+      // Listen for view transitions
+      document.addEventListener("astro:after-swap", updateTheme);
     </script>
+    <ClientRouter />
   </head>
   <body>
     <SidebarTimeline />
