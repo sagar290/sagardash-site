@@ -158,6 +158,24 @@ permissions:
 
 ## 🔧 Troubleshooting
 
+### Images not loading after deployment
+
+If images are broken after deploying to GitHub Pages with a `base` path:
+
+**Solution**: Use `import.meta.env.BASE_URL` for all image paths in Astro components.
+
+```astro
+<!-- ❌ Wrong (absolute path) -->
+<img src="/avatar.png" alt="Avatar" />
+
+<!-- ✅ Correct (uses BASE_URL) -->
+<img src={import.meta.env.BASE_URL + "/avatar.png"} alt="Avatar" />
+```
+
+This is already configured in:
+- `src/pages/index.astro` - Avatar image
+- `src/layouts/BaseLayout.astro` - Favicon and OG image
+
 ### Site not loading after deployment
 
 1. **Wait a few minutes** - GitHub Pages can take 1-5 minutes to deploy
