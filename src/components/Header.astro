@@ -13,9 +13,9 @@ const navLinks = [
 
 <header class="header">
   <div class="header-inner">
-    <a href="/" class="logo">
+    <a href={import.meta.env.BASE_URL} class="logo">
       <div class="logo-avatar">
-        <img src="/avatar.png" alt="Sagar Dash" />
+        <img src={import.meta.env.BASE_URL + "/avatar.png"} alt="Sagar Dash" />
       </div>
       <span class="logo-text">Sagar Dash</span>
     </a>
