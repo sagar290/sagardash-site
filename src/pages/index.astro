@@ -92,6 +92,18 @@ const allArticles = [
               rel="noopener noreferrer">Download CV</MagicButton
             >
           </div>
+
+          <div class="hero-socials mt-8 flex items-center gap-6 relative z-20">
+            <a href="https://github.com/sagar290" target="_blank" rel="noopener noreferrer" class="social-icon-btn group" aria-label="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/sagardash1/" target="_blank" rel="noopener noreferrer" class="social-icon-btn group" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://medium.com/@sagar-dash290" target="_blank" rel="noopener noreferrer" class="social-icon-btn group" aria-label="Medium">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-medium"><path d="M2.5 3h19c.3 0 .5.2.5.5v17c0 .3-.2.5-.5.5h-19a.5.5 0 0 1-.5-.5v-17c0-.3.2-.5.5-.5z"/><path d="M12 12m-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0"/><path d="M18 12c0 1.93-1.12 3.5-2.5 3.5s-2.5-1.57-2.5-3.5 1.12-3.5 2.5-3.5 2.5 1.57 2.5 3.5z"/><path d="M21 12c0 1.66-.22 3-.5 3s-.5-1.34-.5-3 .22-3 .5-3 .5 1.34.5 3z"/></svg>
+            </a>
+          </div>
         </div>
         <div class="hero-avatar relative">
           <Sparkles particleColor="var(--brand-color)" size={8} />
@@ -292,7 +304,7 @@ const allArticles = [
     <!-- Formspree Form -->
     <form
       class="contact-form"
-      action="https://formspree.io/f/YOUR_FORMSPREE_ID"
+      action="https://formspree.io/f/xreawpqj"
       method="POST"
     >
       <div class="form-group">
@@ -360,6 +372,51 @@ const allArticles = [
   .hero-actions {
     display: flex;
     gap: 1rem;
+  }
+  .hero-socials {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .social-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(var(--brand-rgb), 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+  .social-icon-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--brand-color), #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+  .social-icon-btn:hover {
+    color: white;
+    border-color: transparent;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(var(--brand-rgb), 0.2);
+  }
+  .social-icon-btn:hover::before {
+    opacity: 1;
+  }
+  .social-icon-btn svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s ease;
+  }
+  .social-icon-btn:hover svg {
+    transform: scale(1.1);
   }
   .hero-avatar {
     flex-shrink: 0;
@@ -933,6 +990,9 @@ const allArticles = [
       margin-right: auto;
     }
     .hero-actions {
+      justify-content: center;
+    }
+    .hero-socials {
       justify-content: center;
     }
     .avatar-frame {
