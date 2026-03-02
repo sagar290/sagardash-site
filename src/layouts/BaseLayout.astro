@@ -3,7 +3,6 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SidebarTimeline from "../components/SidebarTimeline.astro";
-import ConsentBanner from "../components/ConsentBanner.astro";
 import { ClientRouter } from "astro:transitions";
 
 interface Props {
@@ -62,7 +61,7 @@ const faviconUrl = "/avatar.png";
 
         // Track pageviews and setup click tracking on SPA navigation
         document.addEventListener("astro:page-load", () => {
-          // 1. Log Pageview
+          //1. Log Pageview
           gtag("config", "G-S5X7CD336W", {
             page_path: window.location.pathname,
           });
@@ -219,7 +218,7 @@ const faviconUrl = "/avatar.png";
 
       @media (min-width: 1200px) {
         .main-content {
-          padding-left: 12rem; /* Give space for the timeline sidebar */
+          padding-left: 12rem; /* Give space for timeline sidebar */
         }
       }
 
@@ -231,8 +230,5 @@ const faviconUrl = "/avatar.png";
         min-height: 100vh;
       }
     </style>
-    
-    <!-- GDPR Consent Banner -->
-    <ConsentBanner position="bottom" privacyPolicyUrl="https://policies.google.com/privacy" />
   </body>
 </html>
