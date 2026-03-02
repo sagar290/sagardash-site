@@ -131,11 +131,45 @@ const allArticles = [
 
   <!-- About Section -->
   <section id="about" class="section">
-    <h2 class="section-title">About Me</h2>
-    <div class="about-content">
-      <AboutContent />
+    <div class="about-wrapper">
+      <div class="about-header">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-decoration">
+          <Sparkles particleColor="var(--brand-color)" size={6} />
+        </div>
+      </div>
+        
+        <div class="about-sidebar">
+
+        
+          <div class="about-highlights">
+            <AboutContent />
+          </br>
+            <h3>Core Focus</h3>
+            <div class="highlights-list">
+              <div class="highlight-item">
+                <span class="highlight-icon">⚡</span>
+                <span>Microservices Architecture</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">🚀</span>
+                <span>High-Availability Systems</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">📊</span>
+                <span>Event-Driven Design</span>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">☁️</span>
+                <span>Cloud Infrastructure</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
 
   <!-- Experience Section -->
   <section id="experience" class="section">
@@ -543,6 +577,182 @@ const allArticles = [
   }
 
   /* About */
+  .about-wrapper {
+    position: relative;
+  }
+  
+  .about-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .about-decoration {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+  }
+  
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .about-main {
+    flex: 1;
+  }
+  
+  .about-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand-color), #8b5cf6, var(--brand-color));
+    background-size: 200% 100%;
+    animation: gradientMove 3s ease infinite;
+  }
+  
+  .about-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: var(--brand-color);
+  }
+  
+  .about-card-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+  }
+  
+  :global(.about-card-content ul) {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+  }
+  :global(.about-card-content li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .about-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .about-stats-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    min-width: 200px;
+  }
+  
+  .stats-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--brand-color), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    color: var(--text-color);
+  }
+  
+  .stat-divider {
+    width: 1px;
+    height: 3rem;
+    background: var(--border-color);
+    opacity: 0.5;
+  }
+  
+  .about-highlights {
+    background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .highlights-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .highlights-title::before {
+    content: '✨';
+    font-size: 1.2rem;
+  }
+  
+  .highlights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.9;
+    transition: all 0.2s ease;
+  }
+  
+  .highlight-item:hover {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+  
+  .highlight-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  
+  /* About Content Styles */
   .about-content {
     font-size: 1.1rem;
     line-height: 1.8;
@@ -554,6 +764,7 @@ const allArticles = [
   :global(.about-content li) {
     margin-bottom: 0.5rem;
   }
+
 
   /* Experience Timeline */
   .experience-list {
@@ -1056,7 +1267,44 @@ const allArticles = [
     .projects-grid {
       grid-template-columns: 1fr;
     }
+    
+    /* About section responsive */
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-sidebar {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .about-stats-card {
+      flex: 1;
+      min-width: 0;
+    }
+    .about-highlights {
+      flex: 1;
+      min-width: 0;
+    }
   }
+  
+  @media (max-width: 768px) {
+    .about-card {
+      padding: 1.75rem;
+    }
+    
+    .about-sidebar {
+      flex-direction: column;
+    }
+    
+    .stats-content {
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    
+    .stat-divider {
+      width: 3rem;
+      height: 1px;
+    }
+  } 
 
   /* Carousel Styles */
   .carousel-container {
