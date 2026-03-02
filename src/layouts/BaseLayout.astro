@@ -3,6 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SidebarTimeline from "../components/SidebarTimeline.astro";
+import ConsentBanner from "../components/ConsentBanner.astro";
 import { ClientRouter } from "astro:transitions";
 
 interface Props {
@@ -28,82 +29,103 @@ const faviconUrl = "/avatar.png";
     <link rel="icon" type="image/png" href={faviconUrl} />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X7CD336W"
-    ></script>
+    <!-- Google tag (gtag.js) with Consent Mode -->
     <script is:inline>
+      // Initialize dataLayer
       window.dataLayer = window.dataLayer || [];
+      
+      // gtag function
       function gtag() {
         dataLayer.push(arguments);
       }
-      gtag("js", new Date());
-
-      gtag("config", "G-S5X7CD336W");
-
-      // Track pageviews and setup click tracking on SPA navigation
-      document.addEventListener("astro:page-load", () => {
-        // 1. Log Pageview
-        gtag("config", "G-S5X7CD336W", {
-          page_path: window.location.pathname,
-        });
-
-        // 2. Global Event Listener for Clicks
-        document.body.addEventListener("click", (event) => {
-          const target = event.target.closest("a, button");
-          if (!target) return;
-
-          const label =
-            target.getAttribute("aria-label") ||
-            target.innerText?.trim() ||
-            target.getAttribute("href");
-          const category = target.tagName.toLowerCase();
-
-          gtag("event", "click", {
-            event_category: category,
-            event_label: label,
-            value: window.location.pathname,
-          });
-        });
-
-        // 3. Section Dwell Time Tracking
-        let activeSection = null;
-        let startTime = null;
-
-        const sendTimeEvent = (section, duration) => {
-          if (duration < 1000) return; // Ignore quick scrolls (< 1s)
-          gtag("event", "section_dwell_time", {
-            section_id: section,
-            duration_s: Math.round(duration / 1000),
-          });
-        };
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-                const now = Date.now();
-                if (activeSection && activeSection !== entry.target.id) {
-                  sendTimeEvent(activeSection, now - startTime);
-                }
-                activeSection = entry.target.id;
-                startTime = now;
-              }
-            });
-          },
-          { threshold: 0.6 } // Needs to be 60% visible to count
-        );
-
-        document.querySelectorAll("section[id]").forEach((section) => {
-          observer.observe(section);
-        });
-
-        // Track time when user leaves or navigates
-        document.addEventListener("astro:before-preparation", () => {
-          if (activeSection)
-            sendTimeEvent(activeSection, Date.now() - startTime);
-          activeSection = null;
-        });
+      
+      // Configure consent mode - deny by default for GDPR compliance
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500 // Wait 500ms for consent banner to load
       });
+      
+      // Load gtag.js after consent mode configuration
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-S5X7CD336W';
+      script.onload = () => {
+        gtag("js", new Date());
+        gtag("config", "G-S5X7CD336W", {
+          // Set page tracking to work after consent
+          'anonymize_ip': true,
+          'send_page_view': false // Page view sent after consent
+        });
+
+        // Track pageviews and setup click tracking on SPA navigation
+        document.addEventListener("astro:page-load", () => {
+          // 1. Log Pageview
+          gtag("config", "G-S5X7CD336W", {
+            page_path: window.location.pathname,
+          });
+
+          // 2. Global Event Listener for Clicks
+          document.body.addEventListener("click", (event) => {
+            const target = event.target.closest("a, button");
+            if (!target) return;
+
+            const label =
+              target.getAttribute("aria-label") ||
+              target.innerText?.trim() ||
+              target.getAttribute("href");
+            const category = target.tagName.toLowerCase();
+
+            gtag("event", "click", {
+              event_category: category,
+              event_label: label,
+              value: window.location.pathname,
+            });
+          });
+
+          // 3. Section Dwell Time Tracking
+          let activeSection = null;
+          let startTime = null;
+
+          const sendTimeEvent = (section, duration) => {
+            if (duration < 1000) return; // Ignore quick scrolls (< 1s)
+            gtag("event", "section_dwell_time", {
+              section_id: section,
+              duration_s: Math.round(duration / 1000),
+            });
+          };
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                  const now = Date.now();
+                  if (activeSection && activeSection !== entry.target.id) {
+                    sendTimeEvent(activeSection, now - startTime);
+                  }
+                  activeSection = entry.target.id;
+                  startTime = now;
+                }
+              });
+            },
+            { threshold: 0.6 } // Needs to be 60% visible to count
+          );
+
+          document.querySelectorAll("section[id]").forEach((section) => {
+            observer.observe(section);
+          });
+
+          // Track time when user leaves or navigates
+          document.addEventListener("astro:before-preparation", () => {
+            if (activeSection)
+              sendTimeEvent(activeSection, Date.now() - startTime);
+            activeSection = null;
+          });
+        });
+      };
+      document.head.appendChild(script);
     </script>
 
     <!-- SEO / OpenGraph Tags -->
@@ -209,5 +231,8 @@ const faviconUrl = "/avatar.png";
         min-height: 100vh;
       }
     </style>
+    
+    <!-- GDPR Consent Banner -->
+    <ConsentBanner position="bottom" privacyPolicyUrl="https://policies.google.com/privacy" />
   </body>
 </html>
