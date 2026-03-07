@@ -28,30 +28,30 @@ const navLinks = [
       </button>
     </div>
   </div>
-
-  <div id="mobile-menu" class="mobile-menu">
-    <nav class="mobile-nav">
-      <ul class="mobile-links">
-        {
-          navLinks.map((link) => (
-            <li>
-              <a href={link.href} class="mobile-link">
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-        <li class="mobile-theme-item">
-          <span class="theme-label">Theme Mode</span>
-          <ThemeToggle />
-        </li>
-        <li>
-          <a href="/#contact" class="mobile-contact-btn">Contact Me</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
 </header>
+
+<div id="mobile-menu" class="mobile-menu">
+  <nav class="mobile-nav">
+    <ul class="mobile-links">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="mobile-link">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="mobile-theme-item">
+        <span class="theme-label">Theme Mode</span>
+        <ThemeToggle />
+      </li>
+      <li>
+        <a href="/#contact" class="mobile-contact-btn">Contact Me</a>
+      </li>
+    </ul>
+  </nav>
+</div>
 
 <style>
   .header {
@@ -291,7 +291,7 @@ const navLinks = [
       mobileMenu?.classList.toggle("open");
       toggleBtn?.classList.toggle("menu-open");
       body.style.overflow = mobileMenu?.classList.contains("open")
-        ? "hidden"
+        ? "clip"
         : "";
     }
 
